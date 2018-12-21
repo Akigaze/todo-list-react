@@ -1,5 +1,5 @@
 {
-  "name": "jasmine-enzyme-demo",
+  "name": "todo-list-react",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,12 +7,11 @@
     "test": "jest",
     "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server --open",
-    "example": "webpack-dev-server --open --config example/webpack.config.example.counter.js",
     "jest": "jest --coverage",
     "jasmine": "jasmine",
     "mods": "jest-codemods"
   },
-  "author": "",
+  "author": "Hwang Akigaze",
   "license": "ISC",
   "dependencies": {
     "babel": "^6.23.0",
