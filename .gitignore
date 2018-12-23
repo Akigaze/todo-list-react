@@ -5,6 +5,7 @@
 /dist/bundle.js
 /coverage
 /example/**/dist/bundle.js
+.idea
 
 npm-debug.log*
 yarn-debug.log*

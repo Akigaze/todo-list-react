@@ -1,6 +1,6 @@
 import React from "react";
 import {shallow} from "enzyme";
-import Todo from "../../src/component/todo";
+import Todo from "../../../src/component/todo";
 
 describe("Todo", function() {
     let todo;

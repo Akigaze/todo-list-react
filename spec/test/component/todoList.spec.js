@@ -1,7 +1,7 @@
 import React from "react";
 import {shallow} from "enzyme";
-import {TodoList} from "../../src/component/todoList";
-import {allEqualTo} from "../util/assert";
+import {TodoList} from "../../../src/component/todoList";
+import {allEqualTo} from "../../util/assert";
 
 expect.extend({allEqualTo})
 
