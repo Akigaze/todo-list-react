@@ -18,7 +18,6 @@ describe("Todo List Reducer Test", () => {
 
         expect(state).toHaveProperty("todos", []);
         expect(state).toHaveProperty("filter", ALL);
-
     });
 
     it("should add a todo to the todos of state when get ADD_TODO action", function() {

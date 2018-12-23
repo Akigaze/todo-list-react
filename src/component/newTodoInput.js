@@ -7,9 +7,12 @@ export class NewTodoInput extends Component {
         super(props);
         this.textRef = React.createRef();
     }
+
     addNewTodo = () => {
         const {addTodo} = this.props;
-        const content = this.textRef.current.value;
+        let textInput = his.textRef.current;
+        const content = textInput.value;
+        textInput.value = "";
         addTodo(content);
     }
 
