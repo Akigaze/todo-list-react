@@ -21,7 +21,7 @@ export default class Todo extends Component {
 
         return(
             <p onClick={this.clickTodo}>
-                <input type="checkbox" checked={completed}/>
+                <input type="checkbox" checked={completed} readOnly={true}/>
                 <span className={contentStyle}>{content}</span>
             </p>
         )

@@ -10,7 +10,7 @@ export class NewTodoInput extends Component {
 
     addNewTodo = () => {
         const {addTodo} = this.props;
-        let textInput = his.textRef.current;
+        let textInput = this.textRef.current;
         const content = textInput.value;
         textInput.value = "";
         addTodo(content);
@@ -19,7 +19,7 @@ export class NewTodoInput extends Component {
     render(){
         return(
             <div>
-                <input type="text" ref={this.textRef} placeholder="Input you new TODO"/>
+                <input type="text" ref={this.textRef} placeholder="Input you new TODO" defaultValue="haha"/>
                 <input type="button" value="Add" onClick={this.addNewTodo}/>
             </div>
         )

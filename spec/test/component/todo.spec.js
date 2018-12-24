@@ -36,4 +36,10 @@ describe("Todo", function() {
         expect(checkbox.prop("checked")).toBe(true);
         expect(content).toHaveClassName("todo-completed");
     })
+
+    it("should checkbox be readOnly", function() {
+        const checkbox = todo.find("input[type='checkbox']");
+
+        expect(checkbox.prop("readOnly")).toBe(true);
+    });
 });
