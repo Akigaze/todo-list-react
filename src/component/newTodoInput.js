@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {isEmpty} from "lodash";
 import {newTodoAction} from "../action/todoListAction";
 
 export class NewTodoInput extends Component {
@@ -12,14 +13,16 @@ export class NewTodoInput extends Component {
         const {addTodo} = this.props;
         let textInput = this.textRef.current;
         const content = textInput.value;
-        textInput.value = "";
-        addTodo(content);
+        if (!isEmpty(content)) {
+            textInput.value = "";
+            addTodo(content);
+        }
     }
 
     render(){
         return(
             <div>
-                <input type="text" ref={this.textRef} placeholder="Input you new TODO" defaultValue="haha"/>
+                <input type="text" ref={this.textRef} placeholder="Input you new TODO"/>
                 <input type="button" value="Add" onClick={this.addNewTodo}/>
             </div>
         )

@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {isEmpty} from "lodash";
 
 export default class Todo extends Component {
     constructor(props) {
@@ -9,9 +10,12 @@ export default class Todo extends Component {
     }
 
     clickTodo = () => {
-        this.setState(preState => {
-            return {completed:!preState.completed};
-        });
+        const isToComplete = !this.state.completed;
+        this.setState({completed:isToComplete});
+        const {id, unpdateTodo} = this.props;
+        if (!isEmpty(unpdateTodo)) {
+            unpdateTodo(id, isToComplete);
+        }
     }
 
     render(){

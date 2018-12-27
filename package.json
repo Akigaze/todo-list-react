@@ -32,6 +32,7 @@
     "jest-codemods": "^0.17.0",
     "jest-enzyme": "^7.0.1",
     "jsdom": "^13.0.0",
+    "lodash": "^4.17.11",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-redux": "^6.0.0",
