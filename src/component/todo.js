@@ -1,11 +1,13 @@
 import React, {Component} from "react";
-import {isEmpty} from "lodash";
+import {connect} from "react-redux";
+import {isFunction} from "lodash";
+import {updateTodoAction} from "../action/todoListAction";
 
-export default class Todo extends Component {
+export class Todo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            completed:false
+            completed: props.completed
         };
     }
 
@@ -13,7 +15,7 @@ export default class Todo extends Component {
         const isToComplete = !this.state.completed;
         this.setState({completed:isToComplete});
         const {id, unpdateTodo} = this.props;
-        if (!isEmpty(unpdateTodo)) {
+        if (isFunction(unpdateTodo)) {
             unpdateTodo(id, isToComplete);
         }
     }
@@ -31,3 +33,11 @@ export default class Todo extends Component {
         )
     }
 }
+
+const mapPropsToDispatch = (dispatch) => {
+    return {
+        unpdateTodo: (id, isToComplete) => {dispatch(updateTodoAction(id, isToComplete))}
+    }
+}
+
+export default connect(undefined, mapPropsToDispatch)(Todo);

@@ -3,19 +3,20 @@ import {shallow, mount} from "enzyme";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
 import SmartTodoList, {TodoList} from "../../../src/component/todoList";
+import Todo from "../../../src/component/todo";
 import {allEqualTo} from "../../util/assert";
 import {ADD_TODO} from "../../../src/constant/actionType";
 import {ALL} from "../../../src/constant/filterType";
 
 expect.extend({allEqualTo})
 
-describe("TodoList", function() {
+describe("TodoList", () => {
     let todos;
     let todoList;
     let newTodoInput, todoGroup, filterGroup;
 
     describe("Normal TodoList Component", () => {
-        beforeEach(function() {
+        beforeEach(() => {
             todos=[
                 {id:0, completed:false, content:"Learn React"},
                 {id:1, completed:false, content:"Learn Redux"},
@@ -28,13 +29,13 @@ describe("TodoList", function() {
             filterGroup = todoList.find("FilterGroup");
         });
 
-        it("should contain a NewTodoInput, a TodoGroup and a FilterGroup", function() {
+        it("should contain a NewTodoInput, a TodoGroup and a FilterGroup", () => {
             expect(newTodoInput).toBeDefined();
             expect(todoGroup).toBeDefined();
             expect(filterGroup).toBeDefined();
         });
 
-        it("should contain All, Completed and Undo three filter buttons", function() {
+        it("should contain All, Completed and Undo three filter buttons", () => {
             let filterButtons = filterGroup.shallow().find("input[type='button']");
 
             expect(filterButtons).toHaveLength(3);
@@ -43,8 +44,8 @@ describe("TodoList", function() {
             expect(filterButtons.at(2).prop("value")).toBe("Undo");
         });
 
-        it("should contain specific Todo items accoding to todos", function() {
-            const todoItems = todoGroup.shallow().find("Todo");
+        it("should contain specific Todo items accoding to todos", () => {
+            const todoItems = todoGroup.shallow().find(Todo);
 
             expect(todoItems).toHaveLength(3);
             expect(todoItems.map(todo => todo.prop("completed"))).allEqualTo(false);
@@ -56,17 +57,16 @@ describe("TodoList", function() {
 
     describe("Smart TodoList Component", () => {
         let store, state;
-        beforeEach(function() {
+        beforeEach(() => {
             state = {todos};
             store = configureStore()(state);
         });
 
-        it("should contain TodoGroup with todos props from store", function() {
+        it("should contain TodoGroup with todos props from store", () => {
             todoList = mount(<Provider store={store}><SmartTodoList/></Provider>)
             todoGroup = todoList.find("TodoGroup");
 
             expect(todoGroup.prop("todos")).toEqual(state.todos);
         });
-
     });
 });
