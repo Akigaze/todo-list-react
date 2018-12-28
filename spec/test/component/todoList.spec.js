@@ -5,8 +5,8 @@ import {Provider} from "react-redux";
 import SmartTodoList, {TodoList} from "../../../src/component/todoList";
 import Todo from "../../../src/component/todo";
 import {allEqualTo} from "../../util/assert";
-import {ADD_TODO} from "../../../src/constant/actionType";
-import {ALL} from "../../../src/constant/filterType";
+import * as actionType from "../../../src/constant/actionType";
+import * as filterType from "../../../src/constant/filterType";
 
 expect.extend({allEqualTo})
 
@@ -22,7 +22,7 @@ describe("TodoList", () => {
                 {id:1, completed:false, content:"Learn Redux"},
                 {id:2, completed:false, content:"Learn Jasmine"}
             ]
-            todoList = shallow(<TodoList todos={todos}/>);
+            todoList = shallow(<TodoList todos={todos} filter={filterType.ALL}/>);
 
             newTodoInput = todoList.find("NewTodoInput");
             todoGroup = todoList.find("TodoGroup");
@@ -67,6 +67,21 @@ describe("TodoList", () => {
             todoGroup = todoList.find("TodoGroup");
 
             expect(todoGroup.prop("todos")).toEqual(state.todos);
+        });
+
+        it("should dispatch a change filter action when click filter button", () => {
+            todoList = mount(<Provider store={store}><SmartTodoList/></Provider>)
+            const filterButtons = todoList.find("FilterGroup").find("input[type='button']");
+
+            filterButtons.at(0).simulate("click");
+            filterButtons.at(1).simulate("click");
+            filterButtons.at(2).simulate("click");
+            const actions = store.getActions();
+
+            expect(actions).toHaveLength(3);
+            expect(actions[0]).toEqual({type:actionType.CHANGE_FILTER, filter:filterType.ALL});
+            expect(actions[1]).toEqual({type:actionType.CHANGE_FILTER, filter:filterType.COMPLETED});
+            expect(actions[2]).toEqual({type:actionType.CHANGE_FILTER, filter:filterType.UNDO});
         });
     });
 });

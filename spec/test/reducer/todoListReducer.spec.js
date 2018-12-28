@@ -53,9 +53,17 @@ describe("Todo List Reducer Test", () => {
         todos.push({id:3, content:"Learn React", completed:true})
         const state = reducer({todos, filter:ALL}, action);
 
-        expect(state.todos).toContainEqual( expect.objectContaining({id:3, completed:false}));
-        expect(state.todos).toContainEqual( expect.objectContaining({id:0, completed:false}));
-        expect(state.todos).toContainEqual( expect.objectContaining({id:1, completed:false}));
-        expect(state.todos).toContainEqual( expect.objectContaining({id:2, completed:false}));
+        expect(state.todos).toContainEqual(expect.objectContaining({id:3, completed:false}));
+        expect(state.todos).toContainEqual(expect.objectContaining({id:0, completed:false}));
+        expect(state.todos).toContainEqual(expect.objectContaining({id:1, completed:false}));
+        expect(state.todos).toContainEqual(expect.objectContaining({id:2, completed:false}));
+    });
+
+    it("should change the filter type when get CHANGE_FILTER action", () => {
+        const action = {type:actionType.CHANGE_FILTER, filter:"COMPLETED"};
+        const state = reducer(initedState, action);
+
+        expect(state.filter).toEqual("COMPLETED");
+        expect(state.todos).toEqual(initedState.todos);
     });
 })

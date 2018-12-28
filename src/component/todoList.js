@@ -1,5 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import * as filterType from "../constant/filterType";
+import {firstLetterUpper} from "../util/stringUtil";
+import {changeFilter} from "../action/todoListAction";
+
 import NewTodoInput from "./newTodoInput";
 import Todo from "./todo";
 
@@ -9,15 +13,16 @@ export class TodoList extends Component {
     }
 
     render(){
-        const {todos} = this.props;
+        const {todos, changeFilter} = this.props;
+        let {ALL, COMPLETED, UNDO} = filterType;
         return(
             <div>
                 <NewTodoInput/>
                 <TodoGroup todos={todos}/>
                 <FilterGroup>
-                    <input type="button" value="All"/>
-                    <input type="button" value="Completed"/>
-                    <input type="button" value="Undo"/>
+                    <input type="button" value={firstLetterUpper(ALL)} onClick={() => {changeFilter(ALL)}}/>
+                    <input type="button" value={firstLetterUpper(COMPLETED)} onClick={() => {changeFilter(COMPLETED)}}/>
+                    <input type="button" value={firstLetterUpper(UNDO)} onClick={() => {changeFilter(UNDO)}}/>
                 </FilterGroup>
             </div>
         )
@@ -48,4 +53,10 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, undefined)(TodoList);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeFilter: (filter) => {dispatch(changeFilter(filter))}
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
