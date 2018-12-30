@@ -11,7 +11,7 @@ import * as filterType from "../../../src/constant/filterType";
 expect.extend({allEqualTo})
 
 describe("TodoList", () => {
-    let todos;
+    let todos, filter, changeFilter;
     let todoList;
     let newTodoInput, todoGroup, filterGroup;
 
@@ -22,7 +22,9 @@ describe("TodoList", () => {
                 {id:1, completed:false, content:"Learn Redux"},
                 {id:2, completed:false, content:"Learn Jasmine"}
             ]
-            todoList = shallow(<TodoList todos={todos} filter={filterType.ALL}/>);
+            filter = filterType.ALL;
+            changeFilter = jest.fn();
+            todoList = shallow(<TodoList todos={todos} filter={filter} changeFilter={changeFilter}/>);
 
             newTodoInput = todoList.find("NewTodoInput");
             todoGroup = todoList.find("TodoGroup");
@@ -53,20 +55,63 @@ describe("TodoList", () => {
             expect(todoItems.at(1).prop("content")).toBe("Learn Redux");
             expect(todoItems.at(2).prop("content")).toBe("Learn Jasmine");
         });
+
+        it("should render todoGroup with filtered todos by completed status as props", () => {
+            todos=[
+                {id:0, completed:false, content:"Learn React"},
+                {id:1, completed:true, content:"Learn Redux"},
+                {id:2, completed:false, content:"Learn Jasmine"}
+            ];
+            todoList.setProps({todos, filter:filterType.COMPLETED});
+            todoGroup = todoList.find("TodoGroup");
+
+            expect(todoGroup.prop("todos")).toHaveLength(1);
+            expect(todoGroup.prop("todos")).toEqual([todos[1]]);
+        });
+
+        it("should call changeFilter function with value of props when click filter button", () => {
+            let filterButtons = filterGroup.shallow().find("input[type='button']");
+
+            filterButtons.at(0).simulate("click");
+            expect(changeFilter).toHaveBeenCalledWith(filterType.ALL);
+            filterButtons.at(1).simulate("click");
+            expect(changeFilter).toHaveBeenCalledWith(filterType.COMPLETED);
+            filterButtons.at(2).simulate("click");
+            expect(changeFilter).toHaveBeenCalledWith(filterType.UNDO);
+        });
+
+        it("should ALL button be clicked style and other be unclicked style when render", () => {
+            let filterButtons = filterGroup.shallow().find("input[type='button']");
+
+            expect(filterButtons.at(0)).toHaveClassName("filter-clicked");
+            expect(filterButtons.at(1)).toHaveClassName("filter-unclicked");
+            expect(filterButtons.at(2)).toHaveClassName("filter-unclicked");
+        });
+
+        it("should be clicked style when a filter button be clicked and other be unclicked style", () => {
+            let filterButtons = filterGroup.shallow().find("input[type='button']");
+            filterButtons.at(1).simulate("click");
+            filterGroup = todoList.find("FilterGroup");
+            filterButtons = filterGroup.shallow().find("input[type='button']");
+
+            expect(filterButtons.at(0)).toHaveClassName("filter-unclicked");
+            expect(filterButtons.at(1)).toHaveClassName("filter-clicked");
+            expect(filterButtons.at(2)).toHaveClassName("filter-unclicked");
+        });
     });
 
     describe("Smart TodoList Component", () => {
         let store, state;
         beforeEach(() => {
-            state = {todos};
+            state = {todos, filter};
             store = configureStore()(state);
         });
 
-        it("should contain TodoGroup with todos props from store", () => {
-            todoList = mount(<Provider store={store}><SmartTodoList/></Provider>)
-            todoGroup = todoList.find("TodoGroup");
+        it("should contain props todos and filter from store", () => {
+            todoList = mount(<Provider store={store}><SmartTodoList/></Provider>).find("TodoList");
 
-            expect(todoGroup.prop("todos")).toEqual(state.todos);
+            expect(todoList.prop("todos")).toEqual(state.todos);
+            expect(todoList.prop("filter")).toEqual(state.filter);
         });
 
         it("should dispatch a change filter action when click filter button", () => {

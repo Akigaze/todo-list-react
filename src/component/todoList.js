@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import * as filterType from "../constant/filterType";
+import {isEqual, isFunction} from "lodash";
+import {ALL, COMPLETED, UNDO} from "../constant/filterType";
 import {firstLetterUpper} from "../util/stringUtil";
 import {changeFilter} from "../action/todoListAction";
 
@@ -10,19 +11,49 @@ import Todo from "./todo";
 export class TodoList extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            clickedButton: ALL
+        }
+    }
+
+    getFilteredTodos = () => {
+        let {todos, filter} = this.props
+        if (!isEqual(ALL, filter)) {
+            const status = isEqual(COMPLETED, filter)
+            todos = todos.filter(todo => isEqual(status, todo.completed));
+        }
+        return todos;
+    }
+
+    clickFilter = (filter) => {
+        const {changeFilter} = this.props;
+        this.setState({clickedButton:filter});
+        if (isFunction(changeFilter)) {
+            changeFilter(filter);
+        }
     }
 
     render(){
-        const {todos, changeFilter} = this.props;
-        let {ALL, COMPLETED, UNDO} = filterType;
+        const {filter, changeFilter} = this.props;
+        const {clickedButton} = this.state;
+        const todos = this.getFilteredTodos();
         return(
             <div>
                 <NewTodoInput/>
                 <TodoGroup todos={todos}/>
                 <FilterGroup>
-                    <input type="button" value={firstLetterUpper(ALL)} onClick={() => {changeFilter(ALL)}}/>
-                    <input type="button" value={firstLetterUpper(COMPLETED)} onClick={() => {changeFilter(COMPLETED)}}/>
-                    <input type="button" value={firstLetterUpper(UNDO)} onClick={() => {changeFilter(UNDO)}}/>
+                    <input type="button"
+                        className={isEqual(ALL, clickedButton) ? "filter-clicked" : "filter-unclicked"}
+                        value={firstLetterUpper(ALL)}
+                        onClick={() => {this.clickFilter(ALL)}}/>
+                    <input type="button"
+                        className={isEqual(COMPLETED, clickedButton) ? "filter-clicked" : "filter-unclicked"}
+                        value={firstLetterUpper(COMPLETED)}
+                        onClick={() => {this.clickFilter(COMPLETED)}}/>
+                    <input type="button"
+                        className={isEqual(UNDO, clickedButton) ? "filter-clicked" : "filter-unclicked"}
+                        value={firstLetterUpper(UNDO)}
+                        onClick={() => {this.clickFilter(UNDO)}}/>
                 </FilterGroup>
             </div>
         )

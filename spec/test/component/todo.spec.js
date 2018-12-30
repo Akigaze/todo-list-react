@@ -15,7 +15,7 @@ describe("Todo", () => {
                 id: 1,
                 completed: false,
                 content: "Learn React",
-                unpdateTodo: jest.fn()
+                updateTodo: jest.fn()
             }
             todo = shallow(<Todo {...todoProps}/>);
         });
@@ -73,10 +73,10 @@ describe("Todo", () => {
             expect(checkbox.prop("readOnly")).toBe(true);
         });
 
-        it("should call unpdateTodo function of props when click", () => {
+        it("should call updateTodo function of props when click", () => {
             todo.simulate("click");
 
-            expect(todoProps.unpdateTodo).toHaveBeenCalledWith(1, true);
+            expect(todoProps.updateTodo).toHaveBeenCalledWith(1, true);
         });
     });
 
@@ -94,7 +94,11 @@ describe("Todo", () => {
         });
 
         it("should create a COMPLETE_TODO Action with click a undo todo", () => {
-            todo = mount(<Provider store={store}><SmartTodo {...todoProps}/></Provider>);
+            todo = mount(
+                <Provider store={store}>
+                    <SmartTodo {...todoProps}/>
+                </Provider>
+            );
 
             todo.simulate("click");
             expect(store.getActions()).toContainEqual({type:COMPLETE_TODO, id:1})
@@ -102,7 +106,11 @@ describe("Todo", () => {
 
         it("should create a CANCEL_COMPLETED_TODO Action with click a completed todo", () => {
             todoProps.completed = true;
-            todo = mount(<Provider store={store}><SmartTodo {...todoProps}/></Provider>);
+            todo = mount(
+                <Provider store={store}>
+                    <SmartTodo {...todoProps}/>
+                </Provider>
+            );
 
             todo.simulate("click");
             expect(store.getActions()).toContainEqual({type:CANCEL_COMPLETED_TODO, id:1})

@@ -66,15 +66,18 @@ describe("New Todo Input Test", () => {
         it("should create a ADD_TODO Action with text input value as content when click add button", () => {
             const expectedAction = {type:ADD_TODO, content:"Learn Spring Boot"};
 
-            newTodoInput = mount(<Provider store={store}><SmartNewTodoInput/></Provider>);
+            newTodoInput = mount(
+                <Provider store={store}>
+                    <SmartNewTodoInput/>
+                </Provider>
+            );
             textInput = newTodoInput.find("input[type='text']");
             addButton = newTodoInput.find("input[type='button']");
 
             textInput.instance().value = "Learn Spring Boot";
             addButton.simulate("click");
 
-            const dispatchedAction = store.getActions();
-            expect(dispatchedAction).toContainEqual(expectedAction)
+            expect(store.getActions()).toContainEqual(expectedAction)
         });
     })
 });

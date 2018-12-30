@@ -14,3 +14,11 @@ p span {
 p{
     width: fit-content;
 }
+
+.filter-clicked{
+
+}
+
+.filter-unclicked{
+    color: #7d7a7a;
+}

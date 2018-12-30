@@ -14,9 +14,9 @@ export class Todo extends Component {
     clickTodo = () => {
         const isToComplete = !this.state.completed;
         this.setState({completed:isToComplete});
-        const {id, unpdateTodo} = this.props;
-        if (isFunction(unpdateTodo)) {
-            unpdateTodo(id, isToComplete);
+        const {id, updateTodo} = this.props;
+        if (isFunction(updateTodo)) {
+            updateTodo(id, isToComplete);
         }
     }
 
@@ -36,7 +36,7 @@ export class Todo extends Component {
 
 const mapPropsToDispatch = (dispatch) => {
     return {
-        unpdateTodo: (id, isToComplete) => {dispatch(updateTodoAction(id, isToComplete))}
+        updateTodo: (id, isToComplete) => {dispatch(updateTodoAction(id, isToComplete))}
     }
 }
 
