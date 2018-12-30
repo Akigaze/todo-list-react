@@ -58,10 +58,10 @@ body {
     margin: 8px;
 }
 
-.todo span {
+.todo span{
     display: inline-block;
     cursor: pointer;
-    width: fit-content;
+    /*width: fit-content;*/
 }
 
 .todo-undo {
@@ -85,8 +85,30 @@ body {
 .done-todo {
     width: 18px;
     height: 18px;
+    margin: 0 8px 0 0;
+}
+
+.todo-content{
+    display: flex;
+    flex: auto;
     margin: 0;
-    margin-right: 8px;
+    align-items: flex-end;
+}
+
+.delete-icon{
+    text-align: center;
+    border-radius: 4px;
+    width: 16px;
+    height: 100%;
+    font-weight: bolder;
+    color: #555;
+    transition: 100ms;
+}
+
+.delete-icon:hover{
+    background-color: #fb8789;
+    color: #FFF;
+    transition: 100ms;
 }
 
 .filter-group {
@@ -112,9 +134,11 @@ body {
 .filter-unclicked {
     color: #7a7a7a;
     background: #f9f9f9;
+    transition: 200ms;
 }
 
 .filter-unclicked:hover {
     color: #606060;
     background: #f2f2f2;
+    transition: 200ms;
 }

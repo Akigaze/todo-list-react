@@ -1,4 +1,4 @@
-import {newTodoAction, updateTodoAction, changeFilter} from "../../../src/action/todoListAction";
+import {newTodoAction, updateTodoAction, changeFilterAction, deleteTodoAction} from "../../../src/action/todoListAction";
 import * as actionType from "../../../src/constant/actionType";
 
 describe("Todo List Action Test", () => {
@@ -23,8 +23,13 @@ describe("Todo List Action Test", () => {
     });
 
     it("should get a change filter action with filter type", () => {
-        const action = changeFilter("COMPLETED");
+        const action = changeFilterAction("COMPLETED");
 
         expect(action).toEqual({type:actionType.CHANGE_FILTER, filter:"COMPLETED"});
+    });
+    it("should get a delete todo action with todo id", () => {
+        const action = deleteTodoAction(1);
+
+        expect(action).toEqual({type:actionType.DELETE_TODO, id:1});
     });
 });

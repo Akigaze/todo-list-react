@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {isEqual, isFunction} from "lodash";
 import {ALL, COMPLETED, UNDO} from "../constant/filterType";
 import {firstLetterUpper} from "../util/stringUtil";
-import {changeFilter} from "../action/todoListAction";
+import {changeFilterAction} from "../action/todoListAction";
 
 import NewTodoInput from "./newTodoInput";
 import Todo from "./todo";
@@ -91,7 +91,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeFilter: (filter) => {dispatch(changeFilter(filter))}
+        changeFilter: (filter) => {dispatch(changeFilterAction(filter))}
     }
 };
 

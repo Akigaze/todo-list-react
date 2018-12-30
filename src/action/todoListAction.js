@@ -12,6 +12,10 @@ export const updateTodoAction = (id, isToComplete) => {
     return {type, id};
 };
 
-export const changeFilter = (filter=filterType.ALL) => {
+export const changeFilterAction = (filter=filterType.ALL) => {
     return {type:actionType.CHANGE_FILTER, filter};
+}
+
+export const deleteTodoAction = (id) => {
+    return {type:actionType.DELETE_TODO, id};
 }

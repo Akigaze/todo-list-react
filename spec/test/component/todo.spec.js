@@ -2,12 +2,12 @@ import React from "react";
 import {shallow, mount} from "enzyme";
 import {Provider} from "react-redux";
 import configureStore from "redux-mock-store";
-import {COMPLETE_TODO, CANCEL_COMPLETED_TODO} from "../../../src/constant/actionType";
+import {COMPLETE_TODO, CANCEL_COMPLETED_TODO, DELETE_TODO} from "../../../src/constant/actionType";
 import SmartTodo, {Todo} from "../../../src/component/todo";
 
 describe("Todo", () => {
-    let todo;
-    let todoProps;
+    let todo, todoContent, deleteIcon;
+    let todoProps, deleteTodoSpy;
 
     describe("Normal Todo Component", () => {
         beforeEach(() => {
@@ -17,7 +17,10 @@ describe("Todo", () => {
                 content: "Learn React",
                 updateTodo: jest.fn()
             }
-            todo = shallow(<Todo {...todoProps}/>);
+            deleteTodoSpy = jest.fn();
+            todo = shallow(<Todo {...todoProps} deleteTodo={deleteTodoSpy}/>);
+            todoContent = todo.find(".todo-content");
+            deleteIcon = todo.find("DeleteIcon");
         });
 
         it("should show a checkbox and a specific text", () => {
@@ -47,7 +50,7 @@ describe("Todo", () => {
         })
 
         it("should change to checked style when click a undone todo", () => {
-            todo.simulate("click");
+            todoContent.simulate("click");
 
             const checkbox = todo.find("input[type='checkbox']");
             const content = todo.find("span");
@@ -58,7 +61,7 @@ describe("Todo", () => {
 
         it("should change to unde style when click a completed todo", () => {
             todo.setState({completed: true});
-            todo.simulate("click");
+            todoContent.simulate("click");
 
             const checkbox = todo.find("input[type='checkbox']");
             const content = todo.find("span");
@@ -74,9 +77,38 @@ describe("Todo", () => {
         });
 
         it("should call updateTodo function of props when click", () => {
-            todo.find("p").simulate("click");
+            todoContent.simulate("click");
 
             expect(todoProps.updateTodo).toHaveBeenCalledWith(1, true);
+        });
+
+        it("should show a delete icon when hover", () => {
+            expect(deleteIcon.prop("visible")).toBeFalsy();
+
+            todo.simulate("mouseover");
+            deleteIcon = todo.find("DeleteIcon");
+
+            expect(deleteIcon.prop("visible")).toBeTruthy();
+            expect(deleteIcon.prop("value")).toBe("×");
+        });
+
+        it("should hide a delete icon when mouse out", () => {
+            todo.setState({hovered:true})
+            deleteIcon = todo.find("DeleteIcon");
+            expect(deleteIcon.prop("visible")).toBeTruthy();
+
+            todo.simulate("mouseout");
+            deleteIcon = todo.find("DeleteIcon");
+
+            expect(deleteIcon.prop("visible")).toBeFalsy();
+        });
+
+        it("should call the clickDeleteIcon function of props with todo id when click deleteIcon", () => {
+            todo.setState({hovered:true})
+            deleteIcon = todo.find("DeleteIcon").shallow();
+            deleteIcon.simulate("click");
+
+            expect(deleteTodoSpy).toHaveBeenCalledWith(1);
         });
     });
 
@@ -93,18 +125,18 @@ describe("Todo", () => {
             store = configureStore()(state);
         });
 
-        it("should create a COMPLETE_TODO Action with click a undo todo", () => {
+        it("should create a COMPLETE_TODO Action when click a undo todo", () => {
             todo = mount(
                 <Provider store={store}>
                     <SmartTodo {...todoProps}/>
                 </Provider>
             );
 
-            todo.find("p").simulate("click");
+            todo.find(".todo-content").simulate("click");
             expect(store.getActions()).toContainEqual({type:COMPLETE_TODO, id:1})
         });
 
-        it("should create a CANCEL_COMPLETED_TODO Action with click a completed todo", () => {
+        it("should create a CANCEL_COMPLETED_TODO Action when click a completed todo", () => {
             todoProps.completed = true;
             todo = mount(
                 <Provider store={store}>
@@ -112,9 +144,20 @@ describe("Todo", () => {
                 </Provider>
             );
 
-            todo.find("p").simulate("click");
+            todo.find(".todo-content").simulate("click");
             expect(store.getActions()).toContainEqual({type:CANCEL_COMPLETED_TODO, id:1})
         });
-    });
 
+        it("should create a DELETE_TODO Action when click the delete icon", () => {
+            todo = mount(
+                <Provider store={store}>
+                    <SmartTodo {...todoProps}/>
+                </Provider>
+            );
+            todo.find("Todo").setState({hovered:true});
+            todo.find(".delete-icon").simulate("click");
+
+            expect(store.getActions()).toContainEqual({type:DELETE_TODO, id:1})
+        });
+    });
 });

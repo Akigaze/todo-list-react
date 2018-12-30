@@ -66,4 +66,13 @@ describe("Todo List Reducer Test", () => {
         expect(state.filter).toEqual("COMPLETED");
         expect(state.todos).toEqual(initedState.todos);
     });
+
+    it("should delete the specific todo by id when get DELETE_TODO action", () => {
+        const action = {type:actionType.DELETE_TODO, id:1};
+        const state = reducer({todos, filter:ALL}, action);
+
+        expect(state.todos).toHaveLength(2);
+        expect(state.todos[0]).toEqual(todos[0]);
+        expect(state.todos[1]).toEqual(todos[2]);
+    });
 })

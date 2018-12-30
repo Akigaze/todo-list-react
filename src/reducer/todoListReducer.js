@@ -38,6 +38,11 @@ const reducer = (state=initedState, action={}) => {
             todos = updateTodoCompleted(todos, action.id, false);
             return {todos:[...todos], filter};
         }
+        case actionType.DELETE_TODO : {
+            let {todos, filter} = state;
+            todos = todos.filter(todo => !isEqual(todo.id, action.id));
+            return {todos:[...todos], filter};
+        }
         case actionType.CHANGE_FILTER : {
             let {todos, filter} = state;
             filter = action.filter;
