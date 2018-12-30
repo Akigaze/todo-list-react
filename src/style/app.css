@@ -38,7 +38,7 @@ body {
 
 .add-btn:hover {
     background-color: #fb8789;
-    transition: 300ms;
+    transition: 200ms;
 }
 
 .todo-group {
@@ -54,32 +54,32 @@ body {
 .todo {
     display: flex; /*Flex布局*/
     align-items: center; /*指定垂直居中*/
-    margin: 0;
     padding: 2px;
-    /*width: fit-content; */
     margin: 8px;
 }
 
 .todo span {
     display: inline-block;
-    width: 100%;
     cursor: pointer;
-}
-
-.todo:hover {
-    color: #666;
-    transition: 300ms;
+    width: fit-content;
 }
 
 .todo-undo {
-    transition: 300ms;
+    transition: 200ms;
     cursor: default;
 }
 
 .todo-completed {
     color: gray;
     text-decoration: line-through;
-    transition: 300ms;
+    transition: 200ms;
+}
+
+.todo-undo:hover,
+.todo-completed:hover
+{
+    color: #555;
+    transition: 200ms;
 }
 
 .done-todo {
