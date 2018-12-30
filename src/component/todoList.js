@@ -62,16 +62,21 @@ export class TodoList extends Component {
 
 const TodoGroup = (props) => {
     const {todos} = props;
-    return todos.map(todo => {
+    const todosList = todos.map(todo => {
         const {id, completed, content} = todo;
         return <Todo key={`todo-${id}`} id={id} completed={completed} content={content}/>
     });
+    return (
+        <div className="todo-group">
+            {todosList}
+        </div>
+    )
 };
 
 const FilterGroup = (props) => {
     const {children} = props;
     return (
-        <div>
+        <div className="filter-group">
             {children}
         </div>
     )

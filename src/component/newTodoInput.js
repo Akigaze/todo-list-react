@@ -21,9 +21,9 @@ export class NewTodoInput extends Component {
 
     render(){
         return(
-            <div>
-                <input type="text" ref={this.textRef} placeholder="Input you new TODO"/>
-                <input type="button" value="Add" onClick={this.addNewTodo}/>
+            <div className="new-todo-input">
+                <input type="text" className="input-text" ref={this.textRef} placeholder="Input you new TODO"/>
+                <input type="button" className="add-btn" value="Add" onClick={this.addNewTodo}/>
             </div>
         )
     }

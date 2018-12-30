@@ -1,24 +1,120 @@
-.todo-undo {
+body {
+    background: #ccc;
+}
 
+.container {
+    padding: 20px;
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 40px;
+    background: white;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.title {
+    margin: 20px 8px;
+}
+
+.new-todo-input {
+    margin: 16px 8px;
+}
+
+.input-text {
+    width: 80%;
+    padding: 4px;
+    margin-right: 2%;
+}
+
+.add-btn {
+    background-color: #fc999b;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 6px 0;
+    border: none;
+    width: 14%;
+    transition: 300ms;
+}
+
+.add-btn:hover {
+    background-color: #fb8789;
+    transition: 300ms;
+}
+
+.todo-group {
+    overflow-y: auto;
+    max-height: 300px;
+    margin: 0 8px 0 0;
+}
+
+.todo-group .todo:nth-child(even) {
+    background-color: #f4ecec;
+}
+
+.todo {
+    display: flex; /*Flex布局*/
+    align-items: center; /*指定垂直居中*/
+    margin: 0;
+    padding: 2px;
+    /*width: fit-content; */
+    margin: 8px;
+}
+
+.todo span {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+}
+
+.todo:hover {
+    color: #666;
+    transition: 300ms;
+}
+
+.todo-undo {
+    transition: 300ms;
+    cursor: default;
 }
 
 .todo-completed {
     color: gray;
     text-decoration: line-through;
+    transition: 300ms;
 }
 
-p span {
-    cursor: pointer;
+.done-todo {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    margin-right: 8px;
 }
 
-p{
-    width: fit-content;
+.filter-group {
+    margin: 20px 8px;
+    text-align: right;
 }
 
-.filter-clicked{
-
+.filter-group input {
+    margin-left: 12px;
+    display: inline-block;
+    padding: 6px 0;
+    border: none;
+    border-radius: 2px;
+    min-width: 92px;
+    font-size: 14px;
 }
 
-.filter-unclicked{
-    color: #7d7a7a;
+.filter-clicked {
+    font-weight: bold;
+    background: #ededed;
+}
+
+.filter-unclicked {
+    color: #7a7a7a;
+    background: #f9f9f9;
+}
+
+.filter-unclicked:hover {
+    color: #606060;
+    background: #f2f2f2;
 }

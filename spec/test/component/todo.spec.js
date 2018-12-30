@@ -74,7 +74,7 @@ describe("Todo", () => {
         });
 
         it("should call updateTodo function of props when click", () => {
-            todo.simulate("click");
+            todo.find("p").simulate("click");
 
             expect(todoProps.updateTodo).toHaveBeenCalledWith(1, true);
         });
@@ -100,7 +100,7 @@ describe("Todo", () => {
                 </Provider>
             );
 
-            todo.simulate("click");
+            todo.find("p").simulate("click");
             expect(store.getActions()).toContainEqual({type:COMPLETE_TODO, id:1})
         });
 
@@ -112,7 +112,7 @@ describe("Todo", () => {
                 </Provider>
             );
 
-            todo.simulate("click");
+            todo.find("p").simulate("click");
             expect(store.getActions()).toContainEqual({type:CANCEL_COMPLETED_TODO, id:1})
         });
     });

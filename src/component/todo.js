@@ -26,8 +26,8 @@ export class Todo extends Component {
         const contentStyle = completed ? "todo-completed" : "todo-undo";
 
         return(
-            <p onClick={this.clickTodo}>
-                <input type="checkbox" checked={completed} readOnly={true}/>
+            <p className="todo" onClick={this.clickTodo}>
+                <input type="checkbox" className="done-todo" checked={completed} readOnly={true}/>
                 <span className={contentStyle}>{content}</span>
             </p>
         )
