@@ -24,6 +24,12 @@ body {
     width: 80%;
     padding: 4px;
     margin-right: 2%;
+    border: 1px solid #a9a9a9;
+}
+
+.input-text:hover{
+    box-shadow: 0 0 4px #a9a9a9;
+    transition: 200ms;
 }
 
 .add-btn {
@@ -38,6 +44,7 @@ body {
 
 .add-btn:hover {
     background-color: #fb8789;
+    box-shadow: 0 0 2px #fc999b;
     transition: 200ms;
 }
 
@@ -102,13 +109,15 @@ body {
     height: 100%;
     font-weight: bolder;
     color: #555;
-    transition: 100ms;
+    background-color: #fafafa;
+    transition: 200ms;
 }
 
 .delete-icon:hover{
     background-color: #fb8789;
     color: #FFF;
-    transition: 100ms;
+    box-shadow: 0 0 2px #fc7f82;
+    transition: 200ms;
 }
 
 .filter-group {
@@ -129,6 +138,12 @@ body {
 .filter-clicked {
     font-weight: bold;
     background: #ededed;
+    transition: 200ms;
+}
+
+.filter-clicked:hover {
+    background: #e5e5e5;
+    transition: 200ms;
 }
 
 .filter-unclicked {

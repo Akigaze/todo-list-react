@@ -43,7 +43,7 @@ export class Todo extends Component {
     }
 
     render(){
-        const {id, content} = this.props;
+        const {content} = this.props;
         const {completed, hovered} = this.state;
         const contentStyle = completed ? "todo-completed" : "todo-undo";
 
@@ -62,7 +62,7 @@ export class Todo extends Component {
 const DeleteIcon = (props) => {
     const {value, visible, clickHandler} = props;
     if (!visible){
-        return null;
+        return <span/>;
     }
     return (
         <span className="delete-icon" onClick={clickHandler}>

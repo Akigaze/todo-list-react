@@ -110,6 +110,17 @@ describe("Todo", () => {
 
             expect(deleteTodoSpy).toHaveBeenCalledWith(1);
         });
+
+        xit("should contentEditable props become true when double click Todo text", () => {
+            let todoText = todoContent.find("span");
+
+            expect(todoText.prop("contentEditable")).toBeFalsy();
+            deleteIcon = todo.find("DeleteIcon").shallow();
+
+            todoText.simulate("doubleclick");
+            todoText = todo.find(".todo-content").find("span");
+            expect(todoText.prop("contentEditable")).toBeTruthy();
+        });
     });
 
     describe("Smart Todo Component", () => {
