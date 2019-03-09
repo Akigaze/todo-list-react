@@ -1,3 +1,3 @@
-export const ALL = "ALL";
-export const COMPLETED = "COMPLETED";
-export const UNDO = "UNDO";
+export const ALL = "all";
+export const COMPLETED = "completed";
+export const UNDO = "undo";

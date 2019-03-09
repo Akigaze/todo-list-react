@@ -51,6 +51,7 @@ body {
 .todo-group {
     overflow-y: auto;
     max-height: 300px;
+    min-height: 100px;
     margin: 0 8px 0 0;
 }
 
@@ -121,7 +122,7 @@ body {
 }
 
 .filter-group {
-    margin: 20px 8px;
+    margin: 12px 8px 20px 8px;
     text-align: right;
 }
 

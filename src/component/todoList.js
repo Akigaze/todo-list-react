@@ -1,86 +1,72 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {isEqual, isFunction} from "lodash";
+
 import {ALL, COMPLETED, UNDO} from "../constant/filterType";
-import {firstLetterUpper} from "../util/stringUtil";
 import {changeFilterAction} from "../action/todoListAction";
+import {firstLetterUpper} from "../util/stringUtil";
 
 import NewTodoInput from "./newTodoInput";
 import Todo from "./todo";
+import {FilterButton} from "./filterButton";
 
 export class TodoList extends Component {
     constructor(props) {
         super(props);
+        this.filters = getFiltersDefinitions();
         this.state = {
-            clickedButton: ALL
+            currentFilter: ALL
         }
     }
 
     getFilteredTodos = () => {
-        let {todos, filter} = this.props
+        let {todos, filter} = this.props;
         if (!isEqual(ALL, filter)) {
-            const status = isEqual(COMPLETED, filter)
+            const status = isEqual(COMPLETED, filter);
             todos = todos.filter(todo => isEqual(status, todo.completed));
         }
         return todos;
-    }
+    };
+
+    getFilterButtons = () => {
+        const {currentFilter} = this.state;
+        this.filters.forEach(filter => {
+            filter.clicked = filter.id === currentFilter
+        });
+        return this.filters;
+    };
 
     clickFilter = (filter) => {
         const {changeFilter} = this.props;
-        this.setState({clickedButton:filter});
+        this.setState({currentFilter: filter});
         if (isFunction(changeFilter)) {
             changeFilter(filter);
         }
-    }
+    };
+
 
     render(){
-        const {filter, changeFilter} = this.props;
-        const {clickedButton} = this.state;
         const todos = this.getFilteredTodos();
-        return(
+        const filters = this.getFilterButtons();
+        return (
             <div>
                 <NewTodoInput/>
-                <TodoGroup todos={todos}/>
-                <FilterGroup>
-                    <input type="button"
-                        className={isEqual(ALL, clickedButton) ? "filter-clicked" : "filter-unclicked"}
-                        value={firstLetterUpper(ALL)}
-                        onClick={() => {this.clickFilter(ALL)}}/>
-                    <input type="button"
-                        className={isEqual(COMPLETED, clickedButton) ? "filter-clicked" : "filter-unclicked"}
-                        value={firstLetterUpper(COMPLETED)}
-                        onClick={() => {this.clickFilter(COMPLETED)}}/>
-                    <input type="button"
-                        className={isEqual(UNDO, clickedButton) ? "filter-clicked" : "filter-unclicked"}
-                        value={firstLetterUpper(UNDO)}
-                        onClick={() => {this.clickFilter(UNDO)}}/>
-                </FilterGroup>
+                <div className="todo-group">
+                    {todos.map(todo => {
+                        const {id, completed, content} = todo;
+                        return <Todo key={id} id={id} completed={completed} content={content}/>
+                    })}
+                </div>
+                <div className="filter-group">
+                    {filters.map(filter => {
+                        const {id, text, clicked} = filter;
+                        return <FilterButton key={id} id={id} text={text} clicked={clicked} handleClick={this.clickFilter}/>
+                    })}
+                </div>
             </div>
         )
     }
 }
-
-const TodoGroup = (props) => {
-    const {todos} = props;
-    const todosList = todos.map(todo => {
-        const {id, completed, content} = todo;
-        return <Todo key={`todo-${id}`} id={id} completed={completed} content={content}/>
-    });
-    return (
-        <div className="todo-group">
-            {todosList}
-        </div>
-    )
-};
-
-const FilterGroup = (props) => {
-    const {children} = props;
-    return (
-        <div className="filter-group">
-            {children}
-        </div>
-    )
-};
 
 const mapStateToProps = (state) => {
     return {
@@ -96,3 +82,13 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+
+const getFiltersDefinitions = () => {
+    return [ALL, COMPLETED, UNDO].map(item => {
+        return {
+            id: item,
+            text: firstLetterUpper(item),
+            clicked: false
+        }
+    });
+};

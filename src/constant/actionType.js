@@ -1,8 +1,7 @@
-export const ADD_TODO = "ADD_TODO";
-export const CHANGE_FILTER = "CHANGE_FILTER";
-export const COMPLETE_TODO = "COMPLETE_TODO";
-export const CANCEL_COMPLETED_TODO = "CANCEL_COMPLETED_TODO";
-export const UPDATE_TODO_CONTENT = "UPDATE_TODO_CONTENT";
-export const UPDATE_TODO = "UPDATE_TODO";
-export const DELETE_TODO = "DELETE_TODO";
-
+export const ADD_TODO = "add_todo";
+export const CHANGE_FILTER = "change_filter";
+export const COMPLETE_TODO = "complete_todo";
+export const CANCEL_COMPLETED_TODO = "cancel_completed_todo";
+export const UPDATE_TODO_CONTENT = "update_todo_content";
+export const UPDATE_TODO = "update_todo";
+export const DELETE_TODO = "delete_todo";
