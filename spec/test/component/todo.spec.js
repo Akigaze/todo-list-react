@@ -4,9 +4,10 @@ import {Provider} from "react-redux";
 import configureStore from "redux-mock-store";
 import {COMPLETE_TODO, CANCEL_COMPLETED_TODO, DELETE_TODO} from "../../../src/constant/actionType";
 import SmartTodo, {Todo} from "../../../src/component/todo";
+import {EDIT_PEN, X_DELETE} from "../../../src/constant/Characters";
 
 describe("Todo", () => {
-    let todo, todoContent, deleteIcon;
+    let todo, todoContent, deleteIcon, editIcon;
     let todoProps, deleteTodoSpy;
 
     describe("Normal Todo Component", () => {
@@ -16,11 +17,12 @@ describe("Todo", () => {
                 completed: false,
                 content: "Learn React",
                 updateTodo: jest.fn()
-            }
+            };
             deleteTodoSpy = jest.fn();
             todo = shallow(<Todo {...todoProps} deleteTodo={deleteTodoSpy}/>);
             todoContent = todo.find(".todo-content");
             deleteIcon = todo.find("DeleteIcon");
+            editIcon = todo.find("EditIcon");
         });
 
         it("should show a checkbox and a specific text", () => {
@@ -37,7 +39,7 @@ describe("Todo", () => {
 
             expect(checkbox.prop("checked")).toBe(false);
             expect(content).toHaveClassName("todo-undo");
-        })
+        });
 
         it("should be completed style when a todo has already completed", () => {
             todoProps.completed = true;
@@ -47,7 +49,7 @@ describe("Todo", () => {
 
             expect(checkbox.prop("checked")).toBe(true);
             expect(content).toHaveClassName("todo-completed");
-        })
+        });
 
         it("should change to checked style when click a undone todo", () => {
             todoContent.simulate("click");
@@ -68,7 +70,7 @@ describe("Todo", () => {
 
             expect(checkbox.prop("checked")).toBe(false);
             expect(content).toHaveClassName("todo-undo");
-        })
+        });
 
         it("should checkbox be readOnly", () => {
             const checkbox = todo.find("input[type='checkbox']");
@@ -82,43 +84,51 @@ describe("Todo", () => {
             expect(todoProps.updateTodo).toHaveBeenCalledWith(1, true);
         });
 
-        it("should show a delete icon when hover", () => {
+        it("should show a edit icon and a delete icon when hover", () => {
+            expect(editIcon.prop("visible")).toBeFalsy();
             expect(deleteIcon.prop("visible")).toBeFalsy();
 
             todo.simulate("mouseover");
+            editIcon = todo.find("EditIcon");
             deleteIcon = todo.find("DeleteIcon");
 
+            expect(editIcon.prop("visible")).toBeTruthy();
+            expect(editIcon.prop("value")).toBe(EDIT_PEN);
             expect(deleteIcon.prop("visible")).toBeTruthy();
-            expect(deleteIcon.prop("value")).toBe("×");
+            expect(deleteIcon.prop("value")).toBe(X_DELETE);
         });
 
-        it("should hide a delete icon when mouse out", () => {
-            todo.setState({hovered:true})
+        it("should hide edit icon and delete icon when mouse out", () => {
+            todo.setState({hovered:true});
+            editIcon = todo.find("EditIcon");
             deleteIcon = todo.find("DeleteIcon");
+            expect(editIcon.prop("visible")).toBeTruthy();
             expect(deleteIcon.prop("visible")).toBeTruthy();
 
             todo.simulate("mouseout");
+            editIcon = todo.find("EditIcon");
             deleteIcon = todo.find("DeleteIcon");
 
+            expect(editIcon.prop("visible")).toBeFalsy();
             expect(deleteIcon.prop("visible")).toBeFalsy();
         });
 
         it("should call the clickDeleteIcon function of props with todo id when click deleteIcon", () => {
-            todo.setState({hovered:true})
+            todo.setState({hovered:true});
             deleteIcon = todo.find("DeleteIcon").shallow();
             deleteIcon.simulate("click");
 
             expect(deleteTodoSpy).toHaveBeenCalledWith(1);
         });
 
-        xit("should contentEditable props become true when double click Todo text", () => {
+        xit("should todo becomes editable when click EditIcon", () => {
+            todo.setState({hovered: true});
             let todoText = todoContent.find("span");
-
             expect(todoText.prop("contentEditable")).toBeFalsy();
-            deleteIcon = todo.find("DeleteIcon").shallow();
 
-            todoText.simulate("doubleclick");
+            todo.find("EditIcon").shallow().simulate("click");
             todoText = todo.find(".todo-content").find("span");
+
             expect(todoText.prop("contentEditable")).toBeTruthy();
         });
     });
@@ -131,7 +141,7 @@ describe("Todo", () => {
                 id: 1,
                 completed: false,
                 content: "Learn React"
-            }
+            };
             state = {};
             store = configureStore()(state);
         });

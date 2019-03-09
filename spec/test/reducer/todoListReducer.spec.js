@@ -11,7 +11,7 @@ describe("Todo List Reducer Test", () => {
             {id:0, content:"Learn Spring Boot", completed:false},
             {id:1, content:"Learn Spring Data", completed:false},
             {id:2, content:"Learn Spring Cloud", completed:false},
-        ]
+        ];
 
         initedState = {
             todos: [],
@@ -50,7 +50,7 @@ describe("Todo List Reducer Test", () => {
 
     it("should cancel a completed todo when get CANCEL_COMPLETED_TODO action", () => {
         const action = {type:actionType.CANCEL_COMPLETED_TODO, id:3};
-        todos.push({id:3, content:"Learn React", completed:true})
+        todos.push({id:3, content:"Learn React", completed:true});
         const state = reducer({todos, filter:ALL}, action);
 
         expect(state.todos).toContainEqual(expect.objectContaining({id:3, completed:false}));
@@ -75,4 +75,12 @@ describe("Todo List Reducer Test", () => {
         expect(state.todos[0]).toEqual(todos[0]);
         expect(state.todos[1]).toEqual(todos[2]);
     });
-})
+
+    it("should modify a specific todo content by id when get UPDATE_TODO_CONTENT action", () => {
+        const action = {type:actionType.UPDATE_TODO_CONTENT, id:1, content: "Learn Go Language"};
+        const state = reducer({todos, filter:ALL}, action);
+
+        expect(state.todos).toHaveLength(3);
+        expect(state.todos).toContainEqual(expect.objectContaining({id:1, content: "Learn Go Language"}));
+    });
+});

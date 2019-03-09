@@ -44,7 +44,6 @@ export class TodoList extends Component {
         }
     };
 
-
     render(){
         const todos = this.getFilteredTodos();
         const filters = this.getFilterButtons();

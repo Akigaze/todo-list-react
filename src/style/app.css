@@ -17,7 +17,7 @@ body {
 }
 
 .new-todo-input {
-    margin: 16px 8px;
+    margin: 16px 8px 12px 8px;
 }
 
 .input-text {
@@ -48,6 +48,10 @@ body {
     transition: 200ms;
 }
 
+.add-btn:focus{
+    outline: none;
+}
+
 .todo-group {
     overflow-y: auto;
     max-height: 300px;
@@ -69,7 +73,6 @@ body {
 .todo span{
     display: inline-block;
     cursor: pointer;
-    /*width: fit-content;*/
 }
 
 .todo-undo {
@@ -100,25 +103,8 @@ body {
     display: flex;
     flex: auto;
     margin: 0;
+    padding: 2px 0;
     align-items: flex-end;
-}
-
-.delete-icon{
-    text-align: center;
-    border-radius: 4px;
-    width: 16px;
-    height: 100%;
-    font-weight: bolder;
-    color: #555;
-    background-color: #fafafa;
-    transition: 200ms;
-}
-
-.delete-icon:hover{
-    background-color: #fb8789;
-    color: #FFF;
-    box-shadow: 0 0 2px #fc7f82;
-    transition: 200ms;
 }
 
 .filter-group {
@@ -157,4 +143,42 @@ body {
     color: #606060;
     background: #f2f2f2;
     transition: 200ms;
+}
+
+.delete-icon,
+.edit-icon{
+    text-align: center;
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    color: #555;
+    font-weight: bolder;
+    background-color: #fafafa;
+    transition: background-color 200ms;
+}
+
+.delete-icon{
+    font-size: 18px;
+}
+
+.delete-icon:hover,
+.edit-icon:hover{
+    color: #FFF;
+    transition: 200ms;
+}
+
+.delete-icon:hover{
+    background-color: #fb8789;
+    box-shadow: 0 0 2px #fc7f82;
+}
+
+.edit-icon{
+    color: #7395ff;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.edit-icon:hover{
+    background-color: dodgerblue;
+    box-shadow: 0 0 2px #0bfffe;
 }

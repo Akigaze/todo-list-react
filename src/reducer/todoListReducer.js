@@ -48,6 +48,14 @@ const reducer = (state=initedState, action={}) => {
             filter = action.filter;
             return {todos:[...todos], filter};
         }
+        case actionType.UPDATE_TODO_CONTENT : {
+            const {todos} = state;
+            const {id, content} = action;
+            const nextTodos = todos.map(todo => {
+                return todo.id === id ? {...todo, content} : todo
+            });
+            return {...state, todos: nextTodos};
+        }
         default:
             return state;
     }

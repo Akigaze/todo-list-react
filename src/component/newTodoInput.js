@@ -17,7 +17,7 @@ export class NewTodoInput extends Component {
             textInput.value = "";
             addTodo(content);
         }
-    }
+    };
 
     render(){
         return(
