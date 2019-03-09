@@ -64,8 +64,8 @@ body {
 }
 
 .todo {
-    display: flex; /*Flex布局*/
-    align-items: center; /*指定垂直居中*/
+    display: flex;
+    align-items: center;
     padding: 2px;
     margin: 8px;
 }
@@ -73,6 +73,11 @@ body {
 .todo span{
     display: inline-block;
     cursor: pointer;
+}
+
+.todo-undo,
+.todo-completed{
+    max-width: 280px;
 }
 
 .todo-undo {
@@ -104,7 +109,7 @@ body {
     flex: auto;
     margin: 0;
     padding: 2px 0;
-    align-items: flex-end;
+    align-items: center;
 }
 
 .filter-group {

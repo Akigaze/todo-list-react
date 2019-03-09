@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {isFunction} from "lodash";
 import {updateTodoAction, deleteTodoAction, modifyTodoAction} from "../action/todoListAction";
-import {EDIT_PEN, ENTER_CODE, X_DELETE} from "../constant/Characters";
+import {EDIT_OK, EDIT_PEN, ENTER_CODE, X_DELETE} from "../constant/Characters";
 
 export class Todo extends Component {
     constructor(props) {
@@ -13,6 +13,24 @@ export class Todo extends Component {
             editing: false
         };
     }
+
+    startEdit = () =>{
+        const todo = this.refs.todo;
+        todo.setAttribute("contentEditable", true);
+        todo.focus();
+        this.setState({editing: true});
+    };
+
+    endEdit = () =>{
+        const {id, modifyTodo} = this.props;
+        const todo = this.refs.todo;
+        todo.setAttribute("contentEditable", false);
+        todo.blur();
+        this.setState({editing: false});
+        if (isFunction(modifyTodo)) {
+            modifyTodo(id, todo.textContent);
+        }
+    };
 
     clickTodo = () => {
         const isToComplete = !this.state.completed;
@@ -42,10 +60,8 @@ export class Todo extends Component {
     };
 
     clickEditIcon = () => {
-        const todo = this.refs.todo;
-        todo.setAttribute("contentEditable", true);
-        todo.focus();
-        this.setState({editing: true});
+        const {editing} = this.state;
+        editing ? this.endEdit() : this.startEdit();
     };
 
     clickDeleteIcon = () => {
@@ -56,28 +72,23 @@ export class Todo extends Component {
     };
 
     editTodo = (event) => {
-        const {id, modifyTodo} = this.props;
         if (event.keyCode === ENTER_CODE){
-            const todo = this.refs.todo;
-            todo.setAttribute("contentEditable", false);
-            this.setState({editing: false});
-            if (isFunction(modifyTodo)) {
-                modifyTodo(id, todo.textContent);
-            }
+            this.endEdit();
         }
     };
 
     render() {
         const {content} = this.props;
-        const {completed, hovered} = this.state;
+        const {completed, hovered, editing} = this.state;
         const contentStyle = completed ? "todo-completed" : "todo-undo";
+        const editIconText = editing ? EDIT_OK : EDIT_PEN;
         return (
             <div className="todo" onMouseOver={this.hoverTodo} onMouseOut={this.outOfTodo}>
                 <p className="todo-content" onClick={this.clickTodo}>
                     <input type="checkbox" className="done-todo" checked={completed} readOnly={true}/>
                     <span ref="todo" className={contentStyle} onKeyDown={this.editTodo}>{content}</span>
                 </p>
-                <EditIcon value={EDIT_PEN} visible={hovered} clickHandler={this.clickEditIcon}/>
+                <EditIcon value={editIconText} visible={editing || hovered} clickHandler={this.clickEditIcon}/>
                 <DeleteIcon value={X_DELETE} visible={hovered} clickHandler={this.clickDeleteIcon}/>
             </div>
         )
@@ -85,11 +96,11 @@ export class Todo extends Component {
 }
 
 const EditIcon = (props) => {
-    const {value, visible, clickHandler} = props;
-    if (visible) {
+    const {value, visible, editing, clickHandler} = props;
+    if (editing || visible) {
         return <span className="edit-icon" onClick={clickHandler}>{value}</span>
     }
-    return <span/>;
+    return <span className="edit-icon" style={{backgroundColor: "transparent"}}/>;
 };
 
 const DeleteIcon = (props) => {
@@ -97,7 +108,7 @@ const DeleteIcon = (props) => {
     if (visible) {
         return <span className="delete-icon" onClick={clickHandler}>{value}</span>
     }
-    return <span/>;
+    return <span className="delete-icon" style={{backgroundColor: "transparent"}}/>;
 };
 
 const mapPropsToDispatch = (dispatch) => {
