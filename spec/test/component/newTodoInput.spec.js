@@ -53,6 +53,14 @@ describe("New Todo Input Test", () => {
 
             expect(textInput.instance().value).toBeEmpty();
         });
+
+        it("should call addTodo function of props when type ENTER while text input has content", () => {
+            textInput = newTodoInput.find("input[type='text']");
+            textInput.instance().value = "Learn Spring Boot";
+            textInput.simulate("keydown", {keyCode: 13});
+
+            expect(addTodoSpy).toHaveBeenCalledWith("Learn Spring Boot");
+        });
     });
 
     describe("Smart New Todo Input Component", () => {

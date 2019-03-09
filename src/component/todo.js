@@ -2,9 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {isFunction} from "lodash";
 import {updateTodoAction, deleteTodoAction, modifyTodoAction} from "../action/todoListAction";
-import {EDIT_PEN, X_DELETE} from "../constant/Characters";
-
-const ENTER_CODE = 13;
+import {EDIT_PEN, ENTER_CODE, X_DELETE} from "../constant/Characters";
 
 export class Todo extends Component {
     constructor(props) {
