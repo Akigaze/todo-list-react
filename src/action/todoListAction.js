@@ -23,3 +23,7 @@ export const deleteTodoAction = (id) => {
 export const modifyTodoAction = (id, content) => {
     return {type:actionType.UPDATE_TODO_CONTENT, id, content};
 };
+
+export const editStartAction = (id) => {
+    return {type:actionType.EDIT_START, id};
+};

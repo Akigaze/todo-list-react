@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {isFunction} from "lodash";
-import {updateTodoAction, deleteTodoAction, modifyTodoAction} from "../action/todoListAction";
+import {updateTodoAction, deleteTodoAction, modifyTodoAction, editStartAction} from "../action/todoListAction";
 import {EDIT_OK, EDIT_PEN, ENTER_CODE, X_DELETE} from "../constant/Characters";
 
 export class Todo extends Component {
@@ -10,15 +10,26 @@ export class Todo extends Component {
         this.state = {
             completed: props.completed,
             hovered: false,
-            editing: false
+            editing: props.editing
         };
+    }
+
+    componentDidMount(){
+        if (this.props.editing) {
+            const todo = this.refs.todo;
+            todo.setAttribute("contentEditable", true);
+        }
     }
 
     startEdit = () =>{
         const todo = this.refs.todo;
+        const {id, editStart} = this.props;
         todo.setAttribute("contentEditable", true);
         todo.focus();
         this.setState({editing: true});
+        if (isFunction(editStart)) {
+            editStart(id);
+        }
     };
 
     endEdit = () =>{
@@ -118,7 +129,8 @@ const mapPropsToDispatch = (dispatch) => {
     return {
         updateTodo: (id, isToComplete) => {dispatch(updateTodoAction(id, isToComplete))},
         deleteTodo: (id) => {dispatch(deleteTodoAction(id))},
-        modifyTodo: (id, content) => {dispatch(modifyTodoAction(id, content))}
+        modifyTodo: (id, content) => {dispatch(modifyTodoAction(id, content))},
+        editStart: (id) => {dispatch(editStartAction(id))}
     }
 };
 

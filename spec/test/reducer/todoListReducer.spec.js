@@ -31,7 +31,8 @@ describe("Todo List Reducer Test", () => {
         const expectTodo = {
             id:expect.any(Number),
             content:"Learn Spring Boot",
-            completed:false
+            completed:false,
+            editing:false
         };
         const state = reducer(undefined, action);
 
@@ -76,11 +77,18 @@ describe("Todo List Reducer Test", () => {
         expect(state.todos[1]).toEqual(todos[2]);
     });
 
-    it("should modify a specific todo content by id when get UPDATE_TODO_CONTENT action", () => {
+    it("should modify a specific todo content and end editing by id when get UPDATE_TODO_CONTENT action", () => {
         const action = {type:actionType.UPDATE_TODO_CONTENT, id:1, content: "Learn Go Language"};
         const state = reducer({todos, filter:ALL}, action);
 
         expect(state.todos).toHaveLength(3);
-        expect(state.todos).toContainEqual(expect.objectContaining({id:1, content: "Learn Go Language"}));
+        expect(state.todos).toContainEqual(expect.objectContaining({id: 1, content: "Learn Go Language", editing: false }));
+    });
+
+    it("should change edit status to true when get a EDIT_START action", () => {
+        const action = {type:actionType.EDIT_START, id:1};
+        const state = reducer({todos, filter:ALL}, action);
+
+        expect(state.todos).toContainEqual(expect.objectContaining({id: 1, editing: true}));
     });
 });

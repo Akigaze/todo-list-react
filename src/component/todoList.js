@@ -52,8 +52,8 @@ export class TodoList extends Component {
                 <NewTodoInput/>
                 <div className="todo-group">
                     {todos.map(todo => {
-                        const {id, completed, content} = todo;
-                        return <Todo key={id} id={id} completed={completed} content={content}/>
+                        const {id, completed, editing, content} = todo;
+                        return <Todo key={id} id={id} completed={completed} editing={editing} content={content}/>
                     })}
                 </div>
                 <div className="filter-group">

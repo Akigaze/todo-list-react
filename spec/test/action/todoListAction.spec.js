@@ -3,7 +3,8 @@ import {
     updateTodoAction,
     changeFilterAction,
     deleteTodoAction,
-    modifyTodoAction
+    modifyTodoAction,
+    editStartAction
 } from "../../../src/action/todoListAction";
 import * as actionType from "../../../src/constant/actionType";
 
@@ -44,5 +45,11 @@ describe("Todo List Action Test", () => {
         const action = modifyTodoAction(1, "Learn React");
 
         expect(action).toEqual({type:actionType.UPDATE_TODO_CONTENT, id:1, content: "Learn React"});
+    });
+
+    it("should get a edit start action with todo id", () => {
+        const action = editStartAction(1);
+
+        expect(action).toEqual({type:actionType.EDIT_START, id:1});
     });
 });
