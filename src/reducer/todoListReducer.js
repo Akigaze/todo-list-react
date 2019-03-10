@@ -2,13 +2,15 @@ import {isEqual} from "lodash";
 import * as actionType from "../constant/actionType";
 import {ALL} from "../constant/filterType";
 
+let todoCount = 0;
+
 const initedState = {
     todos: [],
     filter: ALL
 };
 
-const createTodo = (id, content, completed=false, editing=false) => {
-    return {id, content, completed, editing}
+const createTodo = (content, completed=false, editing=false) => {
+    return {id: ++todoCount, content, completed, editing}
 };
 
 const updateTodoCompleted = (todos, id, completed) => {
@@ -24,7 +26,7 @@ const reducer = (state=initedState, action={}) => {
     switch(action.type){
         case actionType.ADD_TODO : {
             let {todos, filter} = state;
-            const todo = createTodo(todos.length, action.content);
+            const todo = createTodo(action.content);
             todos.push(todo);
             return {todos:[...todos], filter};
         }
