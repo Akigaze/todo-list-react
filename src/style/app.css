@@ -44,7 +44,7 @@ body {
 
 .add-btn:hover {
     background-color: #fb8789;
-    box-shadow: 0 0 2px #fc999b;
+    box-shadow: 0 0 4px #fc999b;
     transition: 200ms;
 }
 
@@ -55,8 +55,8 @@ body {
 .todo-group {
     overflow-y: auto;
     max-height: 300px;
-    min-height: 100px;
-    margin: 0 8px 0 0;
+    min-height: 110px;
+    margin: 1px 8px 1px 0;
 }
 
 .todo-group .todo:nth-child(even) {
@@ -78,17 +78,16 @@ body {
 .todo-undo,
 .todo-completed{
     max-width: 280px;
-}
-
-.todo-undo {
     transition: 200ms;
-    cursor: default;
+    border-radius: 2px;
+    padding: 0 2px;
+    border-style: solid;
+    border-width: 1px;
 }
 
 .todo-completed {
     color: gray;
     text-decoration: line-through;
-    transition: 200ms;
 }
 
 .todo-undo:hover,
@@ -184,6 +183,6 @@ body {
 }
 
 .edit-icon:hover{
-    background-color: dodgerblue;
+    background-color: #1E90FF;
     box-shadow: 0 0 2px #0bfffe;
 }

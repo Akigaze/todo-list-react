@@ -18,7 +18,7 @@ export class NewTodoInput extends Component {
     addNewTodo = () => {
         const {addTodo} = this.props;
         let textInput = this.textRef.current;
-        const content = textInput.value;
+        const content = textInput.value.trim();
         if (!isEmpty(content)) {
             textInput.value = "";
             addTodo(content);

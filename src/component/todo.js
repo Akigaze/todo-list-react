@@ -81,12 +81,15 @@ export class Todo extends Component {
         const {content} = this.props;
         const {completed, hovered, editing} = this.state;
         const contentStyle = completed ? "todo-completed" : "todo-undo";
+        const todoBorderColor = editing ? "#1E90FF" : "transparent";
         const editIconText = editing ? EDIT_OK : EDIT_PEN;
         return (
             <div className="todo" onMouseOver={this.hoverTodo} onMouseOut={this.outOfTodo}>
                 <p className="todo-content" onClick={this.clickTodo}>
                     <input type="checkbox" className="done-todo" checked={completed} readOnly={true}/>
-                    <span ref="todo" className={contentStyle} onKeyDown={this.editTodo}>{content}</span>
+                    <span ref="todo" className={contentStyle} style={{borderColor: todoBorderColor}} onKeyDown={this.editTodo}>
+                        {content}
+                    </span>
                 </p>
                 <EditIcon value={editIconText} visible={editing || hovered} clickHandler={this.clickEditIcon}/>
                 <DeleteIcon value={X_DELETE} visible={hovered} clickHandler={this.clickDeleteIcon}/>
