@@ -7,6 +7,7 @@ import {
     editStartAction
 } from "../../../src/action/todoListAction";
 import * as actionType from "../../../src/constant/actionType";
+import * as filterType from "../../../src/constant/filterType";
 
 describe("Todo List Action Test", () => {
     it("should get a new todo action with todo content", () => {
@@ -30,9 +31,15 @@ describe("Todo List Action Test", () => {
     });
 
     it("should get a change filter action with filter type", () => {
-        const action = changeFilterAction("COMPLETED");
+        const action = changeFilterAction(filterType.COMPLETED);
 
-        expect(action).toEqual({type:actionType.CHANGE_FILTER, filter:"COMPLETED"});
+        expect(action).toEqual({type:actionType.CHANGE_FILTER, filter:filterType.COMPLETED});
+    });
+
+    it("should get a change filter action with ALL as default filter type", () => {
+        const action = changeFilterAction();
+
+        expect(action).toEqual({type:actionType.CHANGE_FILTER, filter:filterType.ALL});
     });
 
     it("should get a delete todo action with todo id", () => {
