@@ -14,11 +14,15 @@ export const newTodoAction = (content) => {
     };
 };
 
-export const updateTodoAction = (id, isToComplete) => {
-    const type = isToComplete
-                ? actionType.COMPLETE_TODO
-                : actionType.CANCEL_COMPLETED_TODO;
-    return {type, id};
+export const updateTodoAction = (id, content, isToComplete) => {
+    return async (dispatch) => {
+        const todo = {id, content, status:isToComplete};
+        await axios.put(`/todos/${id}`, todo);
+        const type = isToComplete
+            ? actionType.COMPLETE_TODO
+            : actionType.CANCEL_COMPLETED_TODO;
+        dispatch({type, id})
+    };
 };
 
 export const changeFilterAction = (filter=filterType.ALL) => {
@@ -34,8 +38,12 @@ export const deleteTodoAction = (id) => {
     };
 };
 
-export const modifyTodoAction = (id, content) => {
-    return {type:actionType.UPDATE_TODO_CONTENT, id, content};
+export const modifyTodoAction = (id, content, status) => {
+    return async (dispatch) => {
+        const todo = {id, content, status};
+        await axios.put(`/todos/${id}`, todo);
+        dispatch({type:actionType.UPDATE_TODO_CONTENT, id, content});
+    };
 };
 
 export const editStartAction = (id) => {

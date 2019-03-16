@@ -34,12 +34,13 @@ export class Todo extends Component {
 
     endEdit = () =>{
         const {id, modifyTodo} = this.props;
+        const {completed} = this.state;
         const todo = this.refs.todo;
         todo.setAttribute("contentEditable", false);
         todo.blur();
         this.setState({editing: false});
         if (isFunction(modifyTodo)) {
-            modifyTodo(id, todo.textContent);
+            modifyTodo(id, todo.textContent, completed);
         }
     };
 
@@ -50,9 +51,9 @@ export class Todo extends Component {
             return;
         }
         this.setState({completed: isToComplete});
-        const {id, updateTodo} = this.props;
+        const {id, content, updateTodo} = this.props;
         if (isFunction(updateTodo)) {
-            updateTodo(id, isToComplete);
+            updateTodo(id, content, isToComplete);
         }
     };
 
@@ -127,9 +128,9 @@ const DeleteIcon = (props) => {
 
 const mapPropsToDispatch = (dispatch) => {
     return {
-        updateTodo: (id, isToComplete) => {dispatch(updateTodoAction(id, isToComplete))},
+        updateTodo: (id, content, isToComplete) => {dispatch(updateTodoAction(id, content, isToComplete))},
         deleteTodo: (id) => {dispatch(deleteTodoAction(id))},
-        modifyTodo: (id, content) => {dispatch(modifyTodoAction(id, content))},
+        modifyTodo: (id, content, status) => {dispatch(modifyTodoAction(id, content, status))},
         editStart: (id) => {dispatch(editStartAction(id))}
     }
 };
