@@ -1,7 +1,8 @@
 import axios from "axios";
-import {isEmpty} from "lodash";
+import {isEmpty, isEqual} from "lodash";
 import * as actionType from "../constant/actionType";
 import * as filterType from "../constant/filterType";
+import {ACCEPT} from "../constant/httpStatus";
 
 axios.defaults.baseURL = "http://localhost:8081";
 
@@ -25,7 +26,12 @@ export const changeFilterAction = (filter=filterType.ALL) => {
 };
 
 export const deleteTodoAction = (id) => {
-    return {type:actionType.DELETE_TODO, id};
+    return async (dispatch) => {
+      const response = await axios.delete(`/todos/${id}`);
+      if (isEqual(response.status, ACCEPT)){
+          dispatch({type:actionType.DELETE_TODO, id})
+      }
+    };
 };
 
 export const modifyTodoAction = (id, content) => {

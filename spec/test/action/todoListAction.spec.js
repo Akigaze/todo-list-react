@@ -12,6 +12,7 @@ import {
 } from "../../../src/action/todoListAction";
 import * as actionType from "../../../src/constant/actionType";
 import * as filterType from "../../../src/constant/filterType";
+import {ACCEPT} from "../../../src/constant/httpStatus";
 
 describe("Todo List Action Test", () => {
     describe("Plain Action", () => {
@@ -39,12 +40,6 @@ describe("Todo List Action Test", () => {
             expect(action).toEqual({type:actionType.CHANGE_FILTER, filter:filterType.ALL});
         });
 
-        it("should get a delete todo action with todo id", () => {
-            const action = deleteTodoAction(1);
-
-            expect(action).toEqual({type:actionType.DELETE_TODO, id:1});
-        });
-
         it("should get a modify todo action with todo id and new content", () => {
             const action = modifyTodoAction(1, "Learn React");
 
@@ -67,6 +62,7 @@ describe("Todo List Action Test", () => {
         beforeEach(() => {
             jest.spyOn(axios, "get").mockReturnValueOnce(Promise.resolve({ data: todos}));
             jest.spyOn(axios, "post").mockReturnValueOnce(Promise.resolve({ data: studyTodo}));
+            jest.spyOn(axios, "delete").mockReturnValueOnce(Promise.resolve({ status: ACCEPT}));
 
             mockStore = configureMockStore([thunk])({});
         });
@@ -86,6 +82,15 @@ describe("Todo List Action Test", () => {
             await mockStore.dispatch(action);
 
             expect(axios.post).toHaveBeenCalledWith("/todos", {content:"Learn Spring Cloud"});
+            expect(mockStore.getActions()).toEqual([expectAction]);
+        });
+
+        it("should dispatch a delete todo action with todo id and send to server", async () => {
+            const expectAction = {type:actionType.DELETE_TODO, id:1};
+            const action = deleteTodoAction(1);
+            await mockStore.dispatch(action);
+
+            expect(axios.delete).toHaveBeenCalledWith("/todos/1");
             expect(mockStore.getActions()).toEqual([expectAction]);
         });
     });
