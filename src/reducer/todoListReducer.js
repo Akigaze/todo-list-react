@@ -4,7 +4,7 @@ import {ALL} from "../constant/filterType";
 
 let todoCount = 0;
 
-const initedState = {
+const initialState = {
     todos: [],
     filter: ALL
 };
@@ -22,7 +22,7 @@ const updateTodoCompleted = (todos, id, completed) => {
     });
 };
 
-const reducer = (state=initedState, action={}) => {
+const reducer = (state=initialState, action={}) => {
     switch(action.type){
         case actionType.ADD_TODO : {
             let {todos, filter} = state;
@@ -64,6 +64,10 @@ const reducer = (state=initedState, action={}) => {
                 return todo.id === id ? {...todo, content, editing: false} : todo
             });
             return {...state, todos: nextTodos};
+        }
+        case actionType.REFRESH_TODOS : {
+            const newTodos = action.todos;
+            return {...state, todos: newTodos};
         }
         default:
             return state;

@@ -91,4 +91,14 @@ describe("Todo List Reducer Test", () => {
 
         expect(state.todos).toContainEqual(expect.objectContaining({id: 1, editing: true}));
     });
+
+    it("should replace all todos when get a REFRESH_TODOS action", () => {
+        const newTodos = [
+            {id:0, content:"Learn Spring Cloud", completed:false},
+        ];
+        const action = {type:actionType.REFRESH_TODOS, todos:newTodos};
+
+        const state = reducer({todos, filter:ALL}, action);
+        expect(state.todos).toEqual(newTodos);
+    });
 });
