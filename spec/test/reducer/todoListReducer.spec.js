@@ -3,17 +3,16 @@ import * as actionType from "../../../src/constant/actionType";
 import {ALL} from "../../../src/constant/filterType";
 
 describe("Todo List Reducer Test", () => {
-    let initedState;
-    let todos;
+    let initialState;
+    let studyTodo, sportTodo, cookTodo, todos;
 
     beforeEach(() => {
-        todos = [
-            {id:0, content:"Learn Spring Boot", completed:false},
-            {id:1, content:"Learn Spring Data", completed:false},
-            {id:2, content:"Learn Spring Cloud", completed:false},
-        ];
+        studyTodo = {id:0, content:"Learn Spring Boot", completed:false};
+        sportTodo = {id:1, content:"Run ten kilometer", completed:false};
+        cookTodo = {id:2, content:"Hot pot", completed:false};
+        todos = [studyTodo, sportTodo, cookTodo];
 
-        initedState = {
+        initialState = {
             todos: [],
             filter: ALL
         }
@@ -27,11 +26,9 @@ describe("Todo List Reducer Test", () => {
     });
 
     it("should add a todo to the todos of state when get ADD_TODO action", () => {
-        const action = {type:actionType.ADD_TODO, content:"Learn Spring Boot"};
+        const action = {type:actionType.ADD_TODO, todo:studyTodo};
         const expectTodo = {
-            id:expect.any(Number),
-            content:"Learn Spring Boot",
-            completed:false,
+            ...studyTodo,
             editing:false
         };
         const state = reducer(undefined, action);
@@ -62,10 +59,10 @@ describe("Todo List Reducer Test", () => {
 
     it("should change the filter type when get CHANGE_FILTER action", () => {
         const action = {type:actionType.CHANGE_FILTER, filter:"COMPLETED"};
-        const state = reducer(initedState, action);
+        const state = reducer(initialState, action);
 
         expect(state.filter).toEqual("COMPLETED");
-        expect(state.todos).toEqual(initedState.todos);
+        expect(state.todos).toEqual(initialState.todos);
     });
 
     it("should delete the specific todo by id when get DELETE_TODO action", () => {
@@ -95,6 +92,7 @@ describe("Todo List Reducer Test", () => {
     it("should replace all todos when get a REFRESH_TODOS action", () => {
         const newTodos = [
             {id:0, content:"Learn Spring Cloud", completed:false},
+            {id:1, content:"Swim ten min", completed:false},
         ];
         const action = {type:actionType.REFRESH_TODOS, todos:newTodos};
 

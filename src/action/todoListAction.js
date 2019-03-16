@@ -6,7 +6,11 @@ import * as filterType from "../constant/filterType";
 axios.defaults.baseURL = "http://localhost:8081";
 
 export const newTodoAction = (content) => {
-    return {type:actionType.ADD_TODO, content};
+    return async (dispatch) => {
+        const response = await axios.post("/todos", {content});
+        const newTodo = response.data;
+        dispatch({type: actionType.ADD_TODO, todo:newTodo})
+    };
 };
 
 export const updateTodoAction = (id, isToComplete) => {

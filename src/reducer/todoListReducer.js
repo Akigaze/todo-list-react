@@ -26,8 +26,8 @@ const reducer = (state=initialState, action={}) => {
     switch(action.type){
         case actionType.ADD_TODO : {
             let {todos, filter} = state;
-            const todo = createTodo(action.content);
-            todos.push(todo);
+            const newTodo = Object.assign({editing:false}, action.todo);
+            todos.push(newTodo);
             return {todos:[...todos], filter};
         }
         case actionType.COMPLETE_TODO : {

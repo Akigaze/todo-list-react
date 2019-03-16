@@ -15,14 +15,6 @@ import * as filterType from "../../../src/constant/filterType";
 
 describe("Todo List Action Test", () => {
     describe("Plain Action", () => {
-        it("should get a new todo action with todo content", () => {
-            const action = newTodoAction("Learn Spring Boot");
-
-            expect(action).toEqual(
-                {type:actionType.ADD_TODO, content:"Learn Spring Boot"}
-            );
-        });
-
         it("should get a to complete todo action with todo id", () => {
             const action = updateTodoAction(1, true);
 
@@ -68,12 +60,13 @@ describe("Todo List Action Test", () => {
 
     describe("Async Action", () => {
         let mockStore;
-        const todos = [
-            {id:0, content:"Learn Spring Cloud", completed:false},
-        ];
+        const studyTodo = {id:0, content:"Learn Spring Cloud", completed:false};
+        const sportTodo = {id:0, content:"Run ten kilometer", completed:false};
+        const todos = [studyTodo, sportTodo];
 
         beforeEach(() => {
             jest.spyOn(axios, "get").mockReturnValueOnce(Promise.resolve({ data: todos}));
+            jest.spyOn(axios, "post").mockReturnValueOnce(Promise.resolve({ data: studyTodo}));
 
             mockStore = configureMockStore([thunk])({});
         });
@@ -84,6 +77,15 @@ describe("Todo List Action Test", () => {
             await mockStore.dispatch(action);
 
             expect(axios.get).toHaveBeenCalledWith("/todos");
+            expect(mockStore.getActions()).toEqual([expectAction]);
+        });
+
+        it("should send a new todo content to server and dispatch a new todo action", async () => {
+            const expectAction = {type:actionType.ADD_TODO, todo:studyTodo};
+            const action = newTodoAction("Learn Spring Cloud");
+            await mockStore.dispatch(action);
+
+            expect(axios.post).toHaveBeenCalledWith("/todos", {content:"Learn Spring Cloud"});
             expect(mockStore.getActions()).toEqual([expectAction]);
         });
     });
